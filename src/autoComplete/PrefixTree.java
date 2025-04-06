@@ -43,7 +43,6 @@ public class PrefixTree {
             size++;
         }
 
-        //TODO: complete me
     }
 
     /**
@@ -52,8 +51,16 @@ public class PrefixTree {
      * @return true if contained in the tree.
      */
     public boolean contains(String word){
-        //TODO: complete me
-        return false;
+        TreeNode current = root;
+
+        for (int i = 0; i < word.length(); i++){
+            char c = word.charAt(i);
+            if (!current.children.containsKey(c)){
+                return false;
+            }
+            current = current.children.get(c);
+        }
+        return current.isWord;
     }
 
     /**
