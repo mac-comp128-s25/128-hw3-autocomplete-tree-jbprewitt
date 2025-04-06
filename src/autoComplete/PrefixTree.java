@@ -24,6 +24,25 @@ public class PrefixTree {
      * @param word
      */
     public void add(String word){
+        TreeNode current = root;
+        boolean isNewWord = false;
+
+        for (int i = 0; i < word.length(); i++){
+            char c = word.charAt(i);
+            if (!current.children.containsKey(c)){
+                TreeNode newNode = new TreeNode();
+                newNode.letter = c;
+                current.children.put(c, newNode);
+                isNewWord = true;
+            }
+            current = current.children.get(c);
+        }
+
+        if (!current.isWord){
+            current.isWord = true;
+            size++;
+        }
+
         //TODO: complete me
     }
 
