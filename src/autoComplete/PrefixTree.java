@@ -24,7 +24,25 @@ public class PrefixTree {
      * @param word
      */
     public void add(String word){
-        //TODO: complete me
+        TreeNode current = root;
+        boolean isNewWord = false;
+
+        for (int i = 0; i < word.length(); i++){
+            char c = word.charAt(i);
+            if (!current.children.containsKey(c)){
+                TreeNode newNode = new TreeNode();
+                newNode.letter = c;
+                current.children.put(c, newNode);
+                isNewWord = true;
+            }
+            current = current.children.get(c);
+        }
+
+        if (!current.isWord){
+            current.isWord = true;
+            size++;
+        }
+
     }
 
     /**
@@ -33,8 +51,16 @@ public class PrefixTree {
      * @return true if contained in the tree.
      */
     public boolean contains(String word){
-        //TODO: complete me
-        return false;
+        TreeNode current = root;
+
+        for (int i = 0; i < word.length(); i++){
+            char c = word.charAt(i);
+            if (!current.children.containsKey(c)){
+                return false;
+            }
+            current = current.children.get(c);
+        }
+        return current.isWord;
     }
 
     /**
@@ -44,8 +70,19 @@ public class PrefixTree {
      * @return list of words with prefix
      */
     public ArrayList<String> getWordsForPrefix(String prefix){
-        //TODO: complete me
-        return null;
+        ArrayList<String> results = new ArrayList<>();
+        TreeNode current = root;
+
+        for(int i = 0; i<prefix.length();i++){
+            char c = prefix.charAt(i);
+            if(!current.children.containsKey(c)){
+                return results;
+            }
+            current = current.children.get(c);
+        }
+
+        collectWords(current, prefix, results);
+        return results;
     }
 
     /**
@@ -53,6 +90,23 @@ public class PrefixTree {
      */
     public int size(){
         return size;
+    }
+
+    /**
+     * Collects all complete words in the subtree from given node 
+     * Adds word to list that begins with provided prefix
+     * @param node the current node of the tree
+     * @param wordSoFar the prefix build up from the root to current node
+     * @param results list of the matching words
+     */
+    private void collectWords(TreeNode node, String wordSoFar, ArrayList<String> results) {
+        if (node.isWord) {
+            results.add(wordSoFar);
+        }
+
+        for (Map.Entry<Character, TreeNode> entry : node.children.entrySet()){
+            collectWords(entry.getValue(), wordSoFar +entry.getKey(), results);
+        }
     }
     
 }
