@@ -70,7 +70,6 @@ public class PrefixTree {
      * @return list of words with prefix
      */
     public ArrayList<String> getWordsForPrefix(String prefix){
-        //TODO: complete me
         ArrayList<String> results = new ArrayList<>();
         TreeNode current = root;
 
